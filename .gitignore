@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.build/
+.dist/
+.eggs/
+.venv/
+.venv*/
+.env
+.env*/
+.pytest_cache/
+
+# Scrapy
+.scrapy/
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project
+/data/
+/logs/
+
+uv.lock

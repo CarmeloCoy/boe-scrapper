@@ -44,13 +44,13 @@ Since 01 June of 2025, I download all the "Edictos" and stored them in my local 
 
 ```bash
 # Scrape the current month to a CSV
-uv run boe_scraper/runner.py \
+uv run boe_scraper/runner.py edictos\
   --output-path data/boe_edicts.csv \
   --pattern "(JUZGADO DE LO SOCIAL.*)"
 
 
 # Scrape specific dates and save HTML locally
-uv run boe_scraper/runner.py \
+uv run boe_scraper/runner.py edictos \
   --dates 2025-06-02 2025-06-03 2025-06-09 \
   --output-path data/boe_edicts.csv \
   --download-path ./downloads \
@@ -63,6 +63,8 @@ uv run boe_scraper/runner.py \
 ### Core CLI
 
 `boe_scraper/runner.py` is the main entrypoint for hitting BOE and writing results.
+
+**edictos*: command to scrape edictos judiciales section of BOE.
 
 - **Required arguments**
   - **`--output-path PATH`**: where to write data.
@@ -115,7 +117,7 @@ The same date-generation and runner logic can be used programmatically.
 - **Example**
 
 ```python
-from src.runner import scrape_date_range
+from boe_scraper.runner import scrape_date_range
 
 results = scrape_date_range(
     start_date="2025-06-01",

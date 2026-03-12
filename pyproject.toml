@@ -7,11 +7,15 @@ requires-python = ">=3.14"
 dependencies = [
     "boto3>=1.42.2",
     "deltalake>=1.4.0",
+    "pandera>=0.29.0",
     "polars>=1.38.0",
     "s3fs>=2026.2.0",
     "scrapy>=2.14.0",
     "single-source>=0.4.0",
 ]
+
+[project.scripts]
+boe-scraper = "boe_scraper.runner:main"
 
 [dependency-groups]
 dev = [

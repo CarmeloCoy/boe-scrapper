@@ -7,8 +7,8 @@ import scrapy
 from boe_scraper.settings import settings
 
 
-class BOEParserSpider(scrapy.Spider):
-    name = "boe_parser"
+class EdictosBOEParserSpider(scrapy.Spider):
+    name = "edictos_boe_parser"
     allowed_domains = ["www.boe.es"]
     pattern_obj = None
 

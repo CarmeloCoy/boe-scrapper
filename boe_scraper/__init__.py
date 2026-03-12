@@ -1,5 +1,4 @@
-from .runner import (
-    scrape_business_days,
+from boe_scraper.runner.edictos import (
     scrape_current_month,
     scrape_date_range,
     scrape_last_week,
@@ -8,7 +7,6 @@ from .runner import (
 )
 
 __all__ = [
-    "scrape_business_days",
     "scrape_current_month",
     "scrape_date_range",
     "scrape_last_week",

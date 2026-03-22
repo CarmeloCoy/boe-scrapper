@@ -10,6 +10,13 @@ class Settings:
             return self._settings[name]
         raise AttributeError(f"Setting '{name}' not found.")
 
+    def __setattr__(self, name: str, value) -> None:
+        if name == "_settings":
+            super().__setattr__(name, value)
+            return
+        if name in self._settings:
+            self._settings[name] = value
+
     def __init__(self):
         self._settings = {
             "download_path": os.getenv(

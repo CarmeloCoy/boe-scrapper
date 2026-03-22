@@ -23,7 +23,7 @@ class EdictosScraperRunner(ScraperRunner):
         parse_only: bool = True,
         format: str = "delta",
         download_path: str | None = None,
-        log_path: str | None = None,
+        log_file: str | None = None,
         log_level: str | None = None,
     ):
         """Initialize the runner with optional data folder override."""
@@ -31,7 +31,7 @@ class EdictosScraperRunner(ScraperRunner):
             scraper="edictos_boe_parser",
             output_path=output_path,
             format=format,
-            log_path=log_path,
+            log_file=log_file,
             log_level=log_level,
         )
         self.pattern = pattern
@@ -103,7 +103,7 @@ class EdictosScraperRunner(ScraperRunner):
             format=args.format,
             download_path=args.download_path,
             output_path=args.output_path,
-            log_path=args.log_path,
+            log_file=args.log_file,
             log_level=args.log_level,
             pattern=args.pattern,
             parse_only=args.store_html is None,

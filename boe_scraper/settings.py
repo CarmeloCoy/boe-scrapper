@@ -17,7 +17,7 @@ class Settings:
                 "./downloads",
             ),
             "log_level": os.getenv("LOG_LEVEL", "INFO"),
-            "log_path": os.getenv("LOG_PATH", "./logs"),
+            "log_file": os.getenv("LOG_FILE", "./logs/boe_scraper.log"),
         }
 
 

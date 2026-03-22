@@ -97,8 +97,8 @@ uv run boe_scraper/runner.py edictos \
   - **`--store-html`**
     - Intended to control persistence of raw HTML files under `DOWNLOAD_PATH`.
     - HTML is written into `DOWNLOAD_PATH/date=YYYY-MM-DD/REFERENCE_ID.html`.
-  - **`--log-path PATH`**
-    - Overrides `LOG_PATH`.
+  - **`--log-file file`**
+    - Overrides `LOG_FILE`.
   - **`--log-level LEVEL`**
     - Overrides `LOG_LEVEL` (e.g. `INFO`, `DEBUG`).
 
@@ -136,8 +136,8 @@ print(results["successful_parses"], "dates parsed successfully")
 - **`DOWNLOAD_PATH`**
   - Default: `./downloads`.
   - Used as base directory for HTML storage and offline re-parsing.
-- **`LOG_PATH`**
-  - Default: `./logs`.
+- **`LOG_FILE`**
+  - Default: `./logs/boe_scraper.log`.
   - Directory where log files are written.
 - **`LOG_LEVEL`**
   - Default: `INFO`.

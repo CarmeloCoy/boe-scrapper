@@ -23,14 +23,14 @@ class ScraperRunner(ABC):
         scraper: str,
         output_path: str,
         format: str = "jsonl",
-        log_path: str | None = None,
+        log_file: str | None = None,
         log_level: str | None = None,
     ):
         """Initialize the runner with optional data folder override."""
         self.scraper = scraper
         self.format = format
         self.output_path = output_path
-        self.log_path = log_path or settings.log_path
+        self.log_file = log_file or settings.log_file
         self.log_level = log_level or settings.log_level
         self.setup_logging()
         env = os.environ.copy()
@@ -38,12 +38,11 @@ class ScraperRunner(ABC):
 
     def setup_logging(self) -> None:
         """Setup logging configuration."""
-        self.logfile = f"{self.log_path}/{self.__class__.__name__}.log"
         logging.basicConfig(
             level=self.log_level,
             format="%(asctime)s - %(levelname)s - %(message)s",
             handlers=[
-                logging.FileHandler(self.logfile),
+                logging.FileHandler(self.log_file),
                 logging.StreamHandler(sys.stdout),
             ],
         )
@@ -58,7 +57,7 @@ class ScraperRunner(ABC):
             help="Path to write the output files",
             required=True,
         )
-        parser.add_argument("--log-path", type=str, help="Override log path")
+        parser.add_argument("--log-file", type=str, help="Override log file")
         parser.add_argument("--log-level", type=str, help="Log level")
         parser.add_argument(
             "--format", type=str, help="Format to write the output files", default="csv"

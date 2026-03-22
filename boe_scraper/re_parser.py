@@ -23,7 +23,7 @@ class DateScraperReRunner:
         format: str = "delta",
         download_path: str = None,
         output_path: str = None,
-        log_path: str = None,
+        log_file: str = None,
         log_level: str = None,
         pattern: str = None,
     ):
@@ -32,7 +32,7 @@ class DateScraperReRunner:
         self.pattern = pattern
         self.download_path = download_path or settings.download_path
         self.output_path = output_path
-        self.log_path = log_path or settings.log_path
+        self.log_file = log_file or settings.log_file
         self.log_level = log_level or settings.log_level
         self.setup_logging()
 
@@ -42,7 +42,7 @@ class DateScraperReRunner:
             level=self.log_level,
             format="%(asctime)s - %(levelname)s - %(message)s",
             handlers=[
-                logging.FileHandler(f"{self.log_path}/scraper_re_parser.log"),
+                logging.FileHandler(self.log_file),
                 logging.StreamHandler(sys.stdout),
             ],
         )
@@ -176,7 +176,7 @@ def main():
         format=args.format,
         download_path=args.download_path,
         output_path=args.output_path,
-        log_path=args.log_path,
+        log_file=args.log_file,
         log_level=args.log_level,
         pattern=args.pattern,
     )

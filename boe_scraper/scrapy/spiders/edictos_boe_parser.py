@@ -69,6 +69,6 @@ class EdictosBOEParserSpider(scrapy.Spider):
         yield {
             "department": department,
             "reference_id": reference_id,
-            "date": self.date,
+            "date": date,
             "occurrence": " ".join(match.groups()),
         }

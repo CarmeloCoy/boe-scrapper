@@ -102,7 +102,7 @@ class ScraperRunner(ABC):
             cmd.extend(
                 [
                     "--logfile",
-                    self.logfile,
+                    self.log_file,
                     "-L",
                     self.log_level,
                     "-o",

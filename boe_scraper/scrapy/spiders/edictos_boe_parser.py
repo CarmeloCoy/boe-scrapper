@@ -18,7 +18,7 @@ class EdictosBOEParserSpider(scrapy.Spider):
         # Ensure date is stored on the instance for later use
         dates = []
         for date_str in dates_str.split(","):
-            dates.append(datetime.strptime(date_str, "%Y-%m-%d"))
+            dates.append(datetime.strptime(date_str, "%Y-%m-%d").date())
 
         pattern = getattr(self, "pattern")
         self.pattern_obj = re.compile(pattern)

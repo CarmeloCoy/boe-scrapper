@@ -4,13 +4,14 @@ import inspect
 import sys
 
 from boe_scraper.runner.edictos import EdictosScraperRunner
+from boe_scraper.runner.subastas import SubastasScraperRunner
 
 
 def main() -> int:
     """Main entry point with subcommands."""
     parser = argparse.ArgumentParser(description="Run BOE scrapers")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    runners = [EdictosScraperRunner]
+    runners = [EdictosScraperRunner, SubastasScraperRunner]
     for runner in runners:
         subparser = subparsers.add_parser(
             runner.get_command_name(), help=inspect.getdoc(runner)

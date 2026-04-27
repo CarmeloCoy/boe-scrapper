@@ -1,17 +1,22 @@
 ## BOE Scraper
 
 Scraper for some elements published in the Spanish BOE:
- - Implemented for udicial edicts and BOE auctions (subastas).
+- Judicial edicts
+- Real State BOE auctions (subastas de inmuebles).
 
 On one occasion, I was not properly notified of a court document, so I decided to develop a program that would scrape the BOE (Spanish Official State Gazette) daily to check whether my name appeared in it.
 
 Since 01 June 2025, I have downloaded all the "Edictos" and stored them in my local DB. You can use this repo to scrape from now on, or contact me to get information from past data.
+
+From that time I discovered many other things in BOE of my interest and I started to create for other stuff.
 
 - [BOE Scraper](#boe-scraper)
   - [What this project does](#what-this-project-does)
   - [Requirements](#requirements)
   - [Typical commands](#typical-commands)
   - [Core CLI](#core-cli)
+    - [`edictos`](#edictos)
+    - [`subastas`](#subastas)
   - [Python API](#python-api)
   - [Configuration via environment variables](#configuration-via-environment-variables)
 
@@ -143,7 +148,7 @@ Command to scrape BOE auctions (`subastas.boe.es`) for real-estate auctions by p
 
 The same date-generation and runner logic can be used programmatically.
 
-- **From `boe_scraper/runner/edictos.py`**
+- **From `boe_scraper/runner.py`**
   - **`scrape_current_month(output_path: str, pattern: str, parse_only: bool = False)`**
   - **`scrape_last_week(output_path: str, pattern: str, parse_only: bool = False)`**
   - **`scrape_previous_week(output_path: str, pattern: str, parse_only: bool = False)`**

@@ -14,6 +14,7 @@ class SubastasScraperRunner(ScraperRunner):
     def __init__(
         self,
         output_path: str,
+        code_province: str = "30",
         from_start_date: str | None = None,
         to_start_date: str | None = None,
         format: str = "jsonl",
@@ -30,9 +31,10 @@ class SubastasScraperRunner(ScraperRunner):
         )
         self.from_start_date = from_start_date
         self.to_start_date = to_start_date
+        self.code_province = code_province
 
-    def get_arguments_command(self, cod_provincia: str = "30"):
-        cmd = ["-a", f"cod_provincia={cod_provincia}"]
+    def get_arguments_command(self):
+        cmd = ["-a", f"cod_provincia={self.code_province}"]
         if self.from_start_date:
             cmd.extend(
                 [
@@ -59,7 +61,7 @@ class SubastasScraperRunner(ScraperRunner):
             "--to-start-date", type=str, help="To start date (YYYY-MM-DD)"
         )
         parser.add_argument(
-            "--cod-provincia", type=int, help="INE cod province", required=True
+            "--code-province", type=int, help="INE cod province", required=True
         )
 
     @staticmethod
@@ -69,6 +71,7 @@ class SubastasScraperRunner(ScraperRunner):
     @staticmethod
     def from_argparser(parser):
         return SubastasScraperRunner(
+            code_province=parser.code_province,
             from_start_date=parser.from_start_date,
             to_start_date=parser.to_start_date,
             format=parser.format,
@@ -76,10 +79,6 @@ class SubastasScraperRunner(ScraperRunner):
             log_file=parser.log_file,
             log_level=parser.log_level,
         )
-
-    @staticmethod
-    def get_args_list(args):
-        return [{"cod_provincia": args.cod_provincia}]
 
 
 def run_subastas_scraper_for_dates(
@@ -106,11 +105,10 @@ def run_subastas_scraper_for_dates(
         except ValueError:
             raise ValueError("Format not provided anc could not be inphered from path")
     runner = SubastasScraperRunner(
+        code_province=cod_provincia,
         from_start_date=from_start_date,
         to_start_date=to_start_date,
         format=format,
         output_path=output_path,
     )
-    results = runner.run_scraper_workflow([{"cod_provincia": cod_provincia}])
-    runner.print_results(results)
-    return results
+    return runner.run_scraper_workflow()

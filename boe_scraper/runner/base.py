@@ -77,16 +77,11 @@ class ScraperRunner(ABC):
     def from_argparser(args):
         pass
 
-    @staticmethod
     @abstractmethod
-    def get_args_list(args):
+    def get_arguments_command(self):
         pass
 
-    @abstractmethod
-    def get_arguments_command(self, **kwargs):
-        pass
-
-    def run_scraper(self, **kwargs) -> str | None:
+    def run_scraper(self) -> str | None:
         """Run the scraper for a specific date and return the path to the temporary file."""
         try:
             tmp_file = tempfile.NamedTemporaryFile(delete=False)
@@ -98,7 +93,7 @@ class ScraperRunner(ABC):
                 "crawl",
                 self.scraper,
             ]
-            cmd.extend(self.get_arguments_command(**kwargs))
+            cmd.extend(self.get_arguments_command())
             cmd.extend(
                 [
                     "--logfile",
@@ -136,41 +131,10 @@ class ScraperRunner(ABC):
         else:
             raise ValueError(f"Unsupported format: {self.format}")
 
-    def run_scraper_workflow(self, args_list: list[dict]) -> dict:
+    def run_scraper_workflow(self) -> bool:
         """Run the complete scraper workflow for a list."""
-        results = {
-            "total_dates": len(args_list),
-            "successful_parses": 0,
-            "failed_parses": [],
-            "skipped_parses": [],
-        }
-
-        self.logger.info(f"Starting scraper workflow for {len(args_list)} iterations")
-
-        first = True
-        for index, args in enumerate(args_list):
-            self.logger.info(f"Processing element: {index}")
-
-            parse_success = self.run_scraper(**args)
-            if parse_success:
-                self.write_parser_output(parse_success, first)
-                first = False
-                results["successful_parses"] += 1
-            else:
-                results["failed_parses"].append(index)
-
-        return results
-
-    def print_results(self, results: dict) -> None:
-        """Print a summary of the scraping results."""
-        self.logger.info("=" * 50)
-        self.logger.info("SCRAPING RESULTS SUMMARY")
-        self.logger.info("=" * 50)
-        self.logger.info(f"Total dates processed: {results['total_dates']}")
-        self.logger.info(f"Successful parses: {results['successful_parses']}")
-
-        if results["failed_parses"]:
-            self.logger.warning(f"Failed parses: {len(results['failed_parses'])}")
-            self.logger.warning(f"Failed parses: {results['failed_parses']}")
-
-        self.logger.info("=" * 50)
+        parse_success = self.run_scraper()
+        if parse_success:
+            self.write_parser_output(parse_success, True)
+            return True
+        return False

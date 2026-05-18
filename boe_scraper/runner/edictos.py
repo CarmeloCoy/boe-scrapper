@@ -18,6 +18,7 @@ class EdictosScraperRunner(ScraperRunner):
 
     def __init__(
         self,
+        dates: list[str],
         pattern: str,
         output_path: str,
         parse_only: bool = True,
@@ -34,15 +35,16 @@ class EdictosScraperRunner(ScraperRunner):
             log_file=log_file,
             log_level=log_level,
         )
+        self.dates = dates
         self.pattern = pattern
         self.parse_only = parse_only
         self.download_path = download_path
         self._env["DOWNLOAD_PATH"] = self.download_path or settings.download_path
 
-    def get_arguments_command(self, dates: list[str] = None):
+    def get_arguments_command(self):
         cmd = [
             "-a",
-            f"dates={','.join(dates)}",
+            f"dates={','.join(self.dates)}",
             "-a",
             f"parse_only={self.parse_only}",
             "-a",
@@ -91,16 +93,11 @@ class EdictosScraperRunner(ScraperRunner):
         return "edictos"
 
     @staticmethod
-    def get_args_list(args):
-        dates = get_dates_from_args(args)
-        if not dates:
-            return None
-        return [{"dates": dates}]
-
-    @staticmethod
     def from_argparser(args):
+        dates = get_dates_from_args(args)
         return EdictosScraperRunner(
             format=args.format,
+            dates=dates,
             download_path=args.download_path,
             output_path=args.output_path,
             log_file=args.log_file,
@@ -112,7 +109,7 @@ class EdictosScraperRunner(ScraperRunner):
 
 def run_scraper_for_dates(
     dates: list[str], output_path: str, pattern: str, parse_only: bool = False
-) -> dict:
+) -> bool:
     """
     Run the scraper for a list of dates.
 
@@ -123,13 +120,15 @@ def run_scraper_for_dates(
         parse_only: If True, only parse HTML files, skip downloading
 
     Returns:
-        Dictionary with scraping results
+        True if the scraper was successful, False otherwise
     """
     runner = EdictosScraperRunner(
-        pattern=pattern, parse_only=parse_only, output_path=output_path
+        dates=dates,
+        pattern=pattern,
+        parse_only=parse_only,
+        output_path=output_path,
     )
-    results = runner.run_scraper_workflow([{"dates": dates}])
-    runner.print_results(results)
+    results = runner.run_scraper_workflow()
     return results
 
 

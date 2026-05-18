@@ -4,6 +4,7 @@ import inspect
 import sys
 
 from boe_scraper.runner.edictos import EdictosScraperRunner
+from boe_scraper.runner.edictos_re_parser import EdictosReParserScraperRunner
 from boe_scraper.runner.subastas import SubastasScraperRunner
 
 
@@ -11,7 +12,11 @@ def main() -> int:
     """Main entry point with subcommands."""
     parser = argparse.ArgumentParser(description="Run BOE scrapers")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    runners = [EdictosScraperRunner, SubastasScraperRunner]
+    runners = [
+        EdictosScraperRunner,
+        EdictosReParserScraperRunner,
+        SubastasScraperRunner,
+    ]
     for runner in runners:
         subparser = subparsers.add_parser(
             runner.get_command_name(), help=inspect.getdoc(runner)
@@ -29,16 +34,10 @@ def main() -> int:
         return 1
 
     runner = runner_cls.from_argparser(args)
-    args_list = runner.get_args_list(args)
-    if not args_list:
-        runner.logger.error("Invalid parameters. Use --help for usage information.")
-        return 1
+    results = runner.run_scraper_workflow()
 
-    results = runner.run_scraper_workflow(args_list)
-
-    runner.print_results(results)
-
-    if results["failed_parses"]:
+    if not results:
+        print("Failed to run scraper")
         return 1
     return 0
 
